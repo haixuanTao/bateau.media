@@ -1,8 +1,4 @@
-use std::path::{Path, PathBuf};
-include!(concat!(env!("OUT_DIR"), "/hello.rs"));
-
 use indexmap::indexmap;
-use lazy_static::lazy_static;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
@@ -12,11 +8,6 @@ use wasm_bindgen::prelude::*;
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
-lazy_static! {
-    static ref QA: indexmap::IndexMap<(String, String), (String, String)> =
-        create_asset("../assets");
-}
 
 // This is like the `main` function, except for JavaScript.
 #[wasm_bindgen(start)]
@@ -31,15 +22,20 @@ pub fn main_js() -> Result<(), JsValue> {
     let body = document.body().expect("document should have a body");
     let url = web_sys::Url::new(&document.url().expect("document should have a url"))
         .expect("Should be parsable");
-    let query = url.search_params().get("query");
+    let query = url.search_params().get("q");
 
+    let qa = indexmap! {
+        "> What is 1ms.ai?" => "1ms.ai aims at building fast AI that can auto-generate its code!",
+        "> Current project" => "Current project includes dora-rs and wonnx",
+        "> Joining 1ms.ai" => "We have the following opened positions: Internship and Apprenticeship",
+    };
     match query {
         None => {
-            for question in QA.keys() {
+            for question in qa.keys() {
                 let div = document.create_element("div")?;
                 let span = document.create_element("span")?;
                 let val = document.create_element("a")?;
-                val.set_attribute("href", format!("/?query={question}").as_str())?;
+                val.set_attribute("href", format!("/?q={question}").as_str())?;
                 val.set_text_content(Some(question));
                 span.set_class_name("prompt");
                 span.append_child(&val)?;
@@ -48,15 +44,16 @@ pub fn main_js() -> Result<(), JsValue> {
             }
         }
         Some(q) => {
-            let span = document.create_element("span").unwrap();
-            span.set_inner_html(&q);
+            let span = document.create_element("span")?;
+            let val = document.create_element("a")?;
+            val.set_attribute("href", &format!("/?q={q}"))?;
+            val.set_text_content(Some(&q));
+            span.set_class_name("prompt");
+            span.append_child(&val)?;
             body.append_child(&span)?;
 
             let val = document.create_element("p")?;
-            val.set_text_content(
-                QA.get(q.as_str())
-                    .map(|(_question_html, response_html)| (response_html.as_str())),
-            );
+            val.set_text_content(qa.get(q.as_str()).map(|s| (*s)));
             body.append_child(&val)?;
 
             let span = document.create_element("span")?;
