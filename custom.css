@@ -1,0 +1,52 @@
+
+body {
+  font-family: "cousine", sans-serif !important;
+  font-size: 3em;
+  padding-left: 1em;
+  background-color: rgb(42, 39, 39);
+  color: white;
+}
+
+
+
+
+a {
+    color: cyan;
+    
+}
+
+a:link { text-decoration: none; }
+
+
+a:visited { text-decoration: none; }
+
+
+a:hover { text-decoration: none; }
+
+
+a:active { text-decoration: none; }
+
+.prompt p::after {
+  content: "";
+  width: 0.8em;
+  height: 1.5em;
+  background: #c7c6c8;
+  display: inline-block;
+}
+
+.prompt p {
+  display: flex;
+  align-items: center;
+  gap: 0em;
+}
+
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+}
+
+.prompt p::after {
+    /*code commented for brevity*/
+    animation: cursor-blink 1.5s steps(2) infinite;
+}
