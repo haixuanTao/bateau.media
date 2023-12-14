@@ -1,17 +1,18 @@
 
 body {
-  font-family: "cousine", sans-serif !important;
-  font-size: 3em;
-  padding-left: 1em;
-  background-color: rgb(42, 39, 39);
-  color: white;
+  font-family: "system-ui", sans-serif !important;
+  font-size: 2em;
+  padding: 2rem 2rem 0 2rem;
+  text-align: center;
 }
 
 
-
+.mdl-rounded {
+  border-radius: 2em;
+}
 
 a {
-    color: cyan;
+    color: rgb(31, 42, 42);
     
 }
 
