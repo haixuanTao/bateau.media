@@ -1,17 +1,16 @@
 
 body {
-  font-family: "cousine", sans-serif !important;
+  font-family: "system-ui", sans-serif !important;
   font-size: 3em;
   padding-left: 1em;
-  background-color: rgb(42, 39, 39);
-  color: white;
+  background-color: rgb(243, 193, 193);
 }
 
 
 
 
 a {
-    color: cyan;
+    color: rgb(31, 42, 42);
     
 }
 
